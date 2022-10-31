@@ -1,10 +1,11 @@
-// Задание 2
+// Задание 1
 
 function parseCount(value) {
-    if(isNaN(Number.parseInt(value))){
+    parseValue = Number.parseInt(value);
+    if(isNaN(parseValue)){
         throw new Error('Невалидное значение');
     } 
-    return Number.parseInt(value);
+    return parseValue;
 }
 
 
@@ -13,8 +14,7 @@ function validateCount(value){
     try{
         return parseCount(value);
     } catch (error){
-        console.log(error);
-    } finally {
+        return error;
     }
 }
 
@@ -37,21 +37,23 @@ class Triangle {
     }
 
     getArea(){
-        let p = (this.a + this.b + this.c)/2;
+        let p = this.getPerimeter()/2;
         return Number(Math. sqrt(p*(p - this.a)*(p - this.b)*(p - this.c)).toFixed(3));
     }
 }
 
 function getTriangle(a, b, c){
-    setTimeout(() => {
-        try{
-            return new Triangle(a, b, c);
-        } catch (error){
-            throw error;
-        } 
-    }, 5000)
-    
+    try{
+        return new Triangle(a, b, c);
+    } catch (error){
+        return {
+            getPerimeter: () => "Ошибка! Треугольник не существует",
+            getArea: () => "Ошибка! Треугольник не существует",
+        }
+    }
 }
+
+
 
 
 
