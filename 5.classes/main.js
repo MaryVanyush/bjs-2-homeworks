@@ -12,6 +12,7 @@ console.log(picknick.state); //10
 picknick.fix();
 console.log(picknick.state); //15
 
+
 const library = new Library("Библиотека имени Ленина");
 
 library.addBook(new DetectiveBook("Артур Конан Дойл", "Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе", 2019, 1008));
@@ -19,9 +20,36 @@ library.addBook(new FantasticBook("Аркадий и Борис Стругацк
 library.addBook(new NovelBook("Герберт Уэллс", "Машина времени", 1895, 138));
 library.addBook(new Magazine("Мурзилка", 1924, 60));
 
+console.log(library)
+
 console.log(library.findBookBy("name", "Властелин колец")); //null
 console.log(library.findBookBy("releaseDate", 1924).name); //"Мурзилка"
 
 console.log("Количество книг до выдачи: " + library.books.length); //Количество книг до выдачи: 4
 library.giveBookByName("Машина времени");
 console.log("Количество книг после выдачи: " + library.books.length); //Количество книг после выдачи: 3
+
+
+const student = new Student("Олег Никифоров", "мужской", 20);
+student.setSubject(new Subject('algebra'));
+student.setSubject(new Subject('geometry'));
+student.setSubject(new Subject('biology'));
+student.addMark(6, 'algebra')
+student.addMark(0, 'geometry')
+
+student.addMark(4, 'algebra')
+student.addMark(3, 'algebra')
+student.addMark(3, 'algebra')
+student.addMark(5, 'geometry')
+student.addMark(5, 'geometry')
+student.addMark(4, 'geometry')
+console.log(student);
+
+console.log(student.getAverageBySubject('geometry'));
+console.log(student.getAverageBySubject('algebra'));
+console.log(student.getAverageBySubject('biology'));
+console.log(student.getAverage());
+
+
+// student.exclude("Исключен за попытку подделать оценки")
+console.log(student);
