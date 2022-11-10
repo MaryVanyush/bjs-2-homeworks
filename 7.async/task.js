@@ -40,7 +40,7 @@ class AlarmClock {
         this.timerId = setInterval(() => {
             this.alarmCollection.forEach((alarm) => {
                 if(alarm.time === this.getCurrentFormattedTime()){
-                console.log(alarm.callback())
+                alarm.callback()
                 }
             })
             }, 1000);
