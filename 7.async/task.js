@@ -4,7 +4,7 @@ class AlarmClock {
         this.timerId = null;
     }
 
-    addClock(value, callback, id){
+    addClock(time, callback, id){
         let needalarm = this.alarmCollection.find((alarm) => alarm.id === id);
         if(id === undefined){
             throw new Error('Невозможно идентифицировать будильник. Параметр id не передан');
@@ -12,73 +12,55 @@ class AlarmClock {
             console.error("Будильник с таким id уже существует");
             return;
         }
-        callback();
-        let call = { id: id, value: value,};
-        call.callback = callback;
-        this.alarmCollection.push(call);
+        this.alarmCollection.push({id, time, callback});
     }
 
     removeClock(id){
-        let needalarm = this.alarmCollection.find((alarm) => alarm.id === id);
-        const deleteAlarm = this.alarmCollection.indexOf(needalarm);
-            if(deleteAlarm !== -1){
-                this.alarmCollection.splice(deleteAlarm, 1);
-                return "Будильник удален"
+        let needalarm = this.alarmCollection.findIndex((alarm) => alarm.id === id);
+            if(needalarm !== -1){
+                this.alarmCollection.splice(needalarm, 1);
+                return true;
             }
-        return "Будильник с таким id не существует";
+        return false;
     }
 
     getCurrentFormattedTime(){
-        let date = new Date;
-        return `${date.getHours()}:${date.getMinutes()}`;
+        let nowTime = new Date().toLocaleTimeString("ru-Ru", {
+            hour: "2-digit",
+            minute: "2-digit",
+            });
+        return nowTime;
     }
 
     start(){
-        // function checkClock (call){
-        //     const callTime = this.alarmCollection.find((alarm) => alarm.id === call);
-        //     if (getCurrentFormattedTime() === callTime.value) {
-        //         callTime.callback();
-        //     }
-        // }
-
-        // if (this.timerId === null){
-        //     const interval = () => setTimeout(() => {
-        //         this.alarmCollection.find((alarm) => alarm.checkClock())
-        //     }, 0);
-
-        //     this.timerId.interval = interval;
-        // }
-
-
-    //     - запускает все звонки
-    //     Создайте функцию проверки (checkClock), которая принимает звонок и проверяет: если текущее время совпадает со временем звонка, то вызывайте колбек.
-    //     Если значение идентификатора текущего таймера отсутствует, то создайте новый интервал.
-    //     В этом интервале реализуйте функцию, которая будет перебирать все звонки, и для каждого вызывать функцию checkClock.
-    //     Результат функции setInterval сохраните в свойстве идентификатора текущего таймера.
+        debugger;
+        if(this.timerId !== null){
+            return;
+        }
+        this.timerId = setInterval(() => {
+            this.alarmCollection.forEach((alarm) => {
+                if(alarm.time === this.getCurrentFormattedTime()){
+                console.log(alarm.callback())
+                }
+            })
+            }, 1000);
     } 
 
     stop(){
-        // function clearInterval(){
-
-        //     this.timerId = null
-        // }
-        
-        // if(this.timerId !== null){
-        //     clearInterval()
-        // }
-    // - останавливает выполнение всех звонков
-    // Сделайте проверку существования идентификатора текущего таймера.
-    // Если у идентификатора текущего таймера есть значение, то вызовите функцию clearInterval для удаления интервала, а так же удалите значение из свойства "идентификатор текущего таймера".
+        if(this.timerId !== null){
+            clearInterval(this.timerId);
+            this.timerId = null;
+        }
     } 
 
     printAlarms(){
         console.log(`Печать всех будильников: ${this.alarmCollection.length}`)
-        this.alarmCollection.forEach((alarm) => console.log(`Будильник № ${alarm.id} заведен на ${alarm.value}`));
+        this.alarmCollection.forEach((alarm) => console.log(`Будильник № ${alarm.id} заведен на ${alarm.time}`));
     } 
 
     clearAlarms(){
-        stop();
-        this.alarmCollection.splice(0);
+        this.stop();
+        this.alarmCollection = [];
     } 
 }
 
