@@ -33,7 +33,6 @@ class AlarmClock {
     }
 
     start(){
-        debugger;
         if(this.timerId !== null){
             return;
         }
