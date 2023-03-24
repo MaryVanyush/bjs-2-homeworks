@@ -147,27 +147,44 @@ class Student {
         let subject = this.subjects.find((subject) => {
             if(subject.subjectName === subjectName){
                 subject.marks.push(mark);
-            }
+                return subject;
+            } 
+            // else if (subject.subjectName !== subjectName){
+            //     this.setSubject(new Subject(subjectName));
+            // }
         });
         return subject;
     }
 
     getAverageBySubject(subjectName) {
+        if(this.subjects.length === 0) {
+            console.error("Ошибка, нет предметов");
+            return
+        }
         let subject = this.subjects.filter((subject) => subject.subjectName === subjectName);
-        if(subject[0].marks.length === 0) {
-            return 0;
+        if(subject.length === 0) {
+            console.error("Ошибка, предмет не найден");
+            return;
         }
         let sum = subject[0].marks.reduce((initialmark, mark) => initialmark + mark);
-        return Number((sum/subject[0].marks.length).toFixed(2));
+        return Number((sum/subject[0].marks.length).toFixed(2));        
     }
 
     getAverage(){
+        if(this.subjects.length === 0) {
+            console.error("Ошибка, нет предметов");
+            return
+        }
         let allSubjects = this.subjects.filter((subject) => this.getAverageBySubject(subject.subjectName))
+        console.log(allSubjects)
         let sum = 0;
+        let totalNumberOfMarks = 0
         for(let i = 0; i < allSubjects.length; i++){
+            totalNumberOfMarks += allSubjects[i].marks.length
             sum += allSubjects[i].marks.reduce((initialmark, mark) => initialmark + mark);
         }
-        return sum/allSubjects.length
+
+        return +(sum/totalNumberOfMarks).toFixed(2)
 }
     
     exclude(reason) {
