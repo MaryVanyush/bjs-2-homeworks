@@ -119,10 +119,6 @@ class Library {
 }
 
 
-
-
-
-
 // задание 3
 
 
@@ -131,60 +127,51 @@ class Student {
         this.name = name;
         this.gender = gender;
         this.age = age;
-        this.subjects = [];
+        this.subjects = {};
     }
 
-    setSubject(subjectName){
-        this.subjects.push(subjectName);
+    createSubject(subjectName){
+        this.subjects[subjectName] = []
     }
-
 
     addMark(mark, subjectName) {
         if (mark > 5 || mark < 1){
             console.error("Ошибка, оценка должна быть числом от 1 до 5");
             return
         }
-        let subject = this.subjects.find((subject) => {
-            if(subject.subjectName === subjectName){
-                subject.marks.push(mark);
-                return subject;
-            } 
-            // else if (subject.subjectName !== subjectName){
-            //     this.setSubject(new Subject(subjectName));
-            // }
-        });
-        return subject;
+        if(subjectName in this.subjects){
+            this.subjects[subjectName].push(mark);
+            return;
+        }
+        this.createSubject(subjectName)
+        this.subjects[subjectName].push(mark);
+        return;
     }
 
     getAverageBySubject(subjectName) {
-        if(this.subjects.length === 0) {
-            console.error("Ошибка, нет предметов");
+        if(subjectName in this.subjects) {
+            let sum = this.subjects[subjectName].reduce((initialmark, mark) => initialmark + mark);
+            return Number((sum/this.subjects[subjectName].length).toFixed(2));
+        } else {
+            console.error("Ошибка, предмет не найден");
             return
         }
-        let subject = this.subjects.filter((subject) => subject.subjectName === subjectName);
-        if(subject.length === 0) {
-            console.error("Ошибка, предмет не найден");
-            return;
-        }
-        let sum = subject[0].marks.reduce((initialmark, mark) => initialmark + mark);
-        return Number((sum/subject[0].marks.length).toFixed(2));        
+                
     }
 
     getAverage(){
-        if(this.subjects.length === 0) {
+        if(Object.keys(this.subjects).length === 0){
             console.error("Ошибка, нет предметов");
             return
-        }
-        let allSubjects = this.subjects.filter((subject) => this.getAverageBySubject(subject.subjectName))
-        console.log(allSubjects)
-        let sum = 0;
-        let totalNumberOfMarks = 0
-        for(let i = 0; i < allSubjects.length; i++){
-            totalNumberOfMarks += allSubjects[i].marks.length
-            sum += allSubjects[i].marks.reduce((initialmark, mark) => initialmark + mark);
-        }
-
+        } else {
+            let sum = 0;
+            let totalNumberOfMarks = 0
+        Object.values(this.subjects).forEach(item => {
+            totalNumberOfMarks += item.length
+            item.forEach(el => sum += el)
+        })
         return +(sum/totalNumberOfMarks).toFixed(2)
+        }
 }
     
     exclude(reason) {
@@ -193,11 +180,5 @@ class Student {
     }
 }
 
-class Subject {
-    constructor (subjectName = "", marks = []) {
-        this.subjectName = subjectName;
-        this.marks = marks;
-    }
-}
 
 

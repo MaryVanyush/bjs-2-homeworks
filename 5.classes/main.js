@@ -31,27 +31,23 @@
 
 
 const student = new Student("Олег Никифоров", "мужской", 20);
-student.setSubject(new Subject('algebra'));
-// student.setSubject(new Subject('geometry'));
+// student.createSubject('algebra')
 
 // student.addMark(6, 'algebra')
 // student.addMark(0, 'geometry')
 
 student.addMark(3, 'algebra')
-// student.addMark(5, 'algebra')
-// student.addMark(5, 'algebra')
 student.addMark(5, 'algebra')
-// student.addMark(5, 'geometry')
-// student.addMark(5, 'geometry')
-// student.addMark(4, 'geometry')
-// student.addMark(4, 'biology')
+student.addMark(5, 'geometry')
+student.addMark(5, 'geometry')
+student.addMark(4, 'geometry')
 console.log(student);
 
-// console.log(student.getAverageBySubject('geometry'));
+console.log(student.getAverageBySubject('geometry'));
 console.log(student.getAverageBySubject('algebra'));
 // console.log(student.getAverageBySubject('biology'));
-// console.log(student.getAverage());
+console.log(student.getAverage());
 
 
-// // student.exclude("Исключен за попытку подделать оценки")
+// student.exclude("Исключен за попытку подделать оценки")
 // console.log(student);
